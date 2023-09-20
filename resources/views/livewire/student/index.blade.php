@@ -18,12 +18,12 @@
                             <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                                 Email
                             </th>
-                            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                            {{-- <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                                 Phone Number
                             </th>
                             <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                                 Avatar
-                            </th>
+                            </th> --}}
                             <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                                 Class
                             </th>
@@ -44,12 +44,10 @@
                             </td>
                             <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                                 {{$student->email}}
-                                
+
                             </td>
-                         
-                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                                {{-- <img src="#" alt="" width="200px" /> --}}
-                            </td>
+
+                           
                             <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                                 {{$student->class->name}}
 
@@ -71,6 +69,9 @@
                         @endforeach
                     </tbody>
                 </table>
+            </div>
+            <div class="my-5">
+                {{$students->links()}}
             </div>
         </div>
     </div>
