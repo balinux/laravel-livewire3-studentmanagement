@@ -35,9 +35,11 @@ class Create extends Component
     public function save()  {
         $this->validate();
         
-        Student::create(
+        $student = Student::create(
             $this->only(['name', 'email', 'image', 'class_id', 'section_id'])
         );
+
+        $student->addMedia($this->image)->toMediaCollection();
 
         return redirect('students.index')->with('status','Student has been created');
     }
