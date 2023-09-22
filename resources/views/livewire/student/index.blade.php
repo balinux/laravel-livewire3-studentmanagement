@@ -47,6 +47,11 @@
 
                             </td>
 
+                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                                <img src="{{ $student?->getMedia()?->last()?->getUrl() }}" alt=""
+                                    width="50px" />
+                            </td>
+
                            
                             <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                                 {{$student->class->name}}
