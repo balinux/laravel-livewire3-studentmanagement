@@ -33,7 +33,7 @@
 
                             @if ($student?->getMedia()?->last()?->getUrl())
                             <div class="col-span-6 sm:col-span-4">
-                                <img src="{{$student?->getMedia()?->last()?->getUrl()}}" alt="$student->name"
+                                <img src="{{$student?->getMedia()?->last()?->getUrl()}}" alt="no image from user {{$student->name}}"
                                     width="200px">
                             </div>
 

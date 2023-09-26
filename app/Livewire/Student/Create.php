@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Student;
 
+use App\Livewire\Forms\StoreStudentForm;
 use App\Models\Classes;
 use App\Models\Section;
 use App\Models\Student;
@@ -13,20 +14,12 @@ class Create extends Component
 {
     use WithFileUploads;
 
-    #[Rule('required|min:3')]
-    public $name;
-
-    #[Rule('required|email')]
-    public $email;
-
-    #[Rule('required|image')]
-    public $image;
+    public StoreStudentForm $form;
+   
 
     #[Rule('required')]
     public $class_id;
 
-    #[Rule('required')]
-    public $section_id;
 
     public $sections = [];
 
@@ -44,12 +37,9 @@ class Create extends Component
 
     public function save()  {
         $this->validate();
-        
-        $student = Student::create(
-            $this->only(['name', 'email', 'class_id', 'section_id'])
-        );
 
-        $student->addMedia($this->image)->toMediaCollection();
+        $this->form->store(class_id: $this->class_id);
+        
 
         return redirect(route('students.index'))->with('status','Student has been created');
     }
