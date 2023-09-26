@@ -2,13 +2,14 @@
 
 namespace App\Livewire\Student;
 
-use App\Models\Classes;
+use App\Livewire\Forms\UpdateStudent;
+use App\Livewire\Forms\UpdateStudentForm;
 use App\Models\Section;
 use App\Models\Student;
-use Livewire\Attributes\Layout;
-use Livewire\Attributes\Rule;
 use Livewire\Component;
+use Livewire\Attributes\Rule;
 use Livewire\WithFileUploads;
+use Livewire\Attributes\Layout;
 
 class Edit extends Component
 {
@@ -16,31 +17,21 @@ class Edit extends Component
 
     public Student $student;
 
-    #[Rule('required|min:3')]
-    public $name;
-
-    #[Rule('required|email')]
-    public $email;
-
-    #[Rule('nullable|image')]
-    public $image;
+    public UpdateStudentForm $form;
 
     #[Rule('required')]
     public $class_id;
-
-    #[Rule('required')]
-    public $section_id;
 
     public $sections = [];
 
     public function mount()
     {
-        // mengisi semua properti dengan data student ini
+        $this->form->setStudent($this->student);
+
         $this->fill(
-            $this->student->only('name', 'class_id', 'section_id', 'email'),
+            $this->student->only('class_id'),
         );
 
-        // menampilkan semua section
         $this->sections = Section::where('class_id', $this->student->class_id)->get();
     }
 
@@ -48,7 +39,7 @@ class Edit extends Component
     public function render()
     {
         return view('livewire.student.edit', [
-            'classes' => \App\Models\Classes::all()
+            'classes' => \App\Models\Classes::all(),
         ]);
     }
 
@@ -59,20 +50,10 @@ class Edit extends Component
 
     public function update()
     {
-        $this->validate();
+        // $this->validate();
+        // dd("ada");
 
-        $this->student->update([
-            'name' => $this->name,
-            'class_id' => $this->class_id,
-            'section_id' => $this->section_id,
-            'email' => $this->email,
-        ]);
-
-        if ($this->image) {
-            $this->student
-                ->addMedia($this->image)
-                ->toMediaCollection();
-        }
+        $this->form->update($this->class_id);
 
         return redirect()->route('students.index')
             ->with('status', 'Student details updated successfully.');
