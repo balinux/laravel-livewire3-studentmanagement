@@ -1,5 +1,5 @@
 <div class="mt-8 flex flex-col">
-    
+
     <x-auth-session-status class="mb-4" :status="session('status')" />
     <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
         <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
@@ -48,11 +48,10 @@
                             </td>
 
                             <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                                <img src="{{ $student?->getMedia()?->last()?->getUrl() }}" alt=""
-                                    width="50px" />
+                                <img src="{{ $student?->getMedia()?->last()?->getUrl() }}" alt="" width="50px" />
                             </td>
 
-                           
+
                             <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                                 {{$student->class->name}}
 
@@ -63,10 +62,12 @@
 
                             <td
                                 class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                                <a href="{{route('students.edit', $student->id)}}" class="text-indigo-600 hover:text-indigo-900">
+                                <a href="{{route('students.edit', $student->id)}}"
+                                    class="text-indigo-600 hover:text-indigo-900">
                                     Edit
                                 </a>
-                                <button wire:click='delete({{$student->id}})' class="ml-2 text-indigo-600 hover:text-indigo-900">
+                                <button wire:confirm="Are you sure?" wire:click='delete({{$student->id}})'
+                                    class="ml-2 text-indigo-600 hover:text-indigo-900">
                                     Delete
                                 </button>
                             </td>
@@ -81,3 +82,38 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('livewire:init', () => {
+        // Runs after Livewire is loaded but before it's initialized
+        // on the page...
+
+        Livewire.directive('confirm', ({ el, directive, component, cleanup }) => {
+    let content =  directive.expression
+ 
+    // The "directive" object gives you access to the parsed directive.
+    // For example, here are its values for: wire:click.prevent="deletePost(1)"
+    //
+    // directive.raw = wire:click.prevent
+    // directive.value = "click"
+    // directive.modifiers = ['prevent']
+    // directive.expression = "deletePost(1)"
+ 
+    let onClick = e => {
+        if (! confirm(content)) {
+            e.preventDefault()
+            e.stopImmediatePropagation()
+        }
+    }
+ 
+    el.addEventListener('click', onClick, { capture: true })
+ 
+    // Register any cleanup code inside `cleanup()` in the case
+    // where a Livewire component is removed from the DOM while
+    // the page is still active.
+    cleanup(() => {
+        el.removeEventListener('click', onClick)
+    })
+})
+    })
+</script>
